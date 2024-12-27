@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rank Board</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            color: #333;
+        }
+        .rank-board {
+            width: 80%;
+            max-width: 600px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rank Board</h1>
+    <div class="rank-board">
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody id="rankList">
+                <!-- Dynamic rows will be inserted here -->
+            </tbody>
+        </table>
+        <div class="controls">
+            <input type="text" id="nameInput" placeholder="Enter Name">
+            <input type="number" id="scoreInput" placeholder="Enter Score">
+            <button onclick="addEntry()">Add</button>
+        </div>
+    </div>
+    <script>
+        const rankList = document.getElementById("rankList");
+
+        // Sample data
+        const ranks = [
+            { name: "A", score: 95 },
+            { name: "B", score: 90 },
+            { name: "C", score: 85 },
+        ];
+
+        // Function to render the rank board
+        function renderRankBoard() {
+            rankList.innerHTML = "";
+            ranks
+                .sort((a, b) => b.score - a.score) // Sort by score descending
+                .forEach((entry, index) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${entry.name}</td>
+                        <td>${entry.score}</td>
+                    `;
+                    rankList.appendChild(row);
+                });
+        }
+
+        // Function to add a new entry
+        function addEntry() {
+            const name = document.getElementById("nameInput").value.trim();
+            const score = parseInt(document.getElementById("scoreInput").value);
+
+            if (name === "" || isNaN(score)) {
+                alert("Please enter a valid name and score.");
+                return;
+            }
+
+            ranks.push({ name, score });
+            renderRankBoard();
+
+            // Clear inputs
+            document.getElementById("nameInput").value = "";
+            document.getElementById("scoreInput").value = "";
+        }
+
+        // Initial rendering of the rank board
+        renderRankBoard();
+    </script>
+</body>
+</html>
